@@ -32,12 +32,9 @@ export const quoteSchema = new Schema({
   },
   dateCreated: {
     type: String,
-    default: "today",
+    default: 'today',
   },
   dateUpdated: String,
-})
+});
 
-export const QuoteModel = model<Quote>(
-  "quotes",
-  quoteSchema
-);
+export const QuoteModel = model<Quote>('quotes', quoteSchema);
