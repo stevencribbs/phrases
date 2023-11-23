@@ -5,13 +5,18 @@ import { v4 as uuid } from 'uuid';
 
 @Service()
 export class DBService {
-
-  async getQuotes(userKey: string = 'u123'){
-    const results = await QuoteModel.query("userKey").eq(userKey).exec();
+  async getQuotes(userKey: string = 'u123') {
+    const results = await QuoteModel.query('userKey').eq(userKey).exec();
     return results;
   }
 
-  async createQuote(userKey: string, author?: string, text?: string, tags?: string[], reference?: string) {
+  async createQuote(
+    userKey: string,
+    author?: string,
+    text?: string,
+    tags?: string[],
+    reference?: string,
+  ) {
     const newQuoteKey: string = uuid();
     const result = await QuoteModel.create({
       userKey,
@@ -19,7 +24,7 @@ export class DBService {
       author,
       text,
       tags,
-      reference
+      reference,
     });
     return result;
   }
@@ -55,9 +60,11 @@ export class DBService {
 
     const userKey = 'u7147';
     quoteData.map((quote) => {
-      try{
+      try {
         this.createQuote(userKey, quote.author, quote.text, quote.tags);
-      } catch (error) { console.log({error})}
+      } catch (error) {
+        console.log({ error });
+      }
     });
   }
 }
