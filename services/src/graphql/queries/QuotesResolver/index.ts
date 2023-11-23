@@ -1,0 +1,1 @@
+export { QuotesResolver } from './QuotesResolver';
