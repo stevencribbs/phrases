@@ -1,30 +1,7 @@
-
-import { Quote } from '../../../database/models/Quotes';
 import { DBService } from '../../../database/DBService';
-import { Arg, Field, ObjectType, Query, Resolver } from 'type-graphql';
+import { Arg, Query, Resolver } from 'type-graphql';
 import { Service } from 'typedi';
-
-@ObjectType('quote')
-export class QuoteOutput implements Partial<Quote> {
-  @Field()
-  public userKey: string;
-
-  @Field()
-  public quoteKey: string;
-
-  @Field({ nullable: true })
-  public author?: string;
-
-  @Field({ nullable: true })
-  public text?: string;
-
-  @Field(() => [String], { nullable: true })
-  public tags?: string[];
-
-  @Field({ nullable: true })
-  public reference?: string;
-}
-
+import { QuoteOutput } from '../../outputs/quote';
 
 @Service()
 @Resolver()
@@ -36,14 +13,12 @@ export class QuotesResolver {
   }
 
   @Query(() => [QuoteOutput])
-  async quotesForUser(
-    @Arg('userKey') userKey: string
-  ) {
-    console.log('call getQuotes')
+  async quotesForUser(@Arg('userKey') userKey: string) {
+    console.log('call getQuotes');
     // try{
-      // const userKey = 'u123';
-      //TODO: validate userKey and return error if needed
-      const quotes = await this.dataService.getQuotes(userKey);
+    // const userKey = 'u123';
+    //TODO: validate userKey and return error if needed
+    const quotes = await this.dataService.getQuotes(userKey);
     // }
     // catch (ex) {
     //   console.log({ex})
