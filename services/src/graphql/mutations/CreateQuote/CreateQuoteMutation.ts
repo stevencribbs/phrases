@@ -17,8 +17,8 @@ export class CreateQuoteMutation {
 
   @Mutation(() => QuoteOutput)
   async createQuote(
-    @Arg('quote', { validate: false })
-    { userKey, author, text, tags, reference }: CreateQuoteInput
+    @Arg('quote')
+    { userKey, author, text, tags, reference }: CreateQuoteInput,
   ): Promise<QuoteOutput> {
     console.log('in createQuote mutation');
     //TODO: userKey should come from context
@@ -28,7 +28,7 @@ export class CreateQuoteMutation {
       author,
       text,
       tags,
-      reference
+      reference,
     );
     return newQuote;
     // }
