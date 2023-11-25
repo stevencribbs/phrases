@@ -18,6 +18,7 @@ const main = async () => {
 
   const schema = await buildSchema({
     resolvers: [PingResolver, QuotesResolver, CreateQuoteMutation],
+    validate: true,
   });
 
   const apolloServer = new ApolloServer({ schema });
