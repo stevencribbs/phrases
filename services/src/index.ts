@@ -10,6 +10,8 @@ import { PingResolver } from './graphql/queries/PingResolver';
 import dynamoose from 'dynamoose';
 import { QuotesResolver } from './graphql/queries/QuotesResolver';
 import { CreateQuoteMutation } from './graphql/mutations/CreateQuote/CreateQuoteMutation';
+import { UpdateQuoteMutation } from './graphql/mutations/UpdateQuote/UpdateQuoteMutation';
+import { DeleteQuoteMutation } from './graphql/mutations/DeleteQuote/DeleteQuoteMutation';
 
 const main = async () => {
   // const dynamoDbEndpoint = 'http://localhost:8000';
@@ -17,7 +19,13 @@ const main = async () => {
   dynamoose.aws.ddb.local(dynamoDbEndpoint);
 
   const schema = await buildSchema({
-    resolvers: [PingResolver, QuotesResolver, CreateQuoteMutation],
+    resolvers: [
+      PingResolver,
+      QuotesResolver,
+      CreateQuoteMutation,
+      DeleteQuoteMutation,
+      UpdateQuoteMutation,
+    ],
     validate: true,
   });
 

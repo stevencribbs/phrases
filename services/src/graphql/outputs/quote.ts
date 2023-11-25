@@ -21,3 +21,9 @@ export class QuoteOutput implements Partial<Quote> {
   @Field({ nullable: true })
   public reference?: string;
 }
+
+@ObjectType('DeleteQuoteResult')
+export class DeleteQuoteResult {
+  @Field()
+  public result: string;
+}
