@@ -29,6 +29,36 @@ export class DBService {
     return result;
   }
 
+  async updateQuote(
+    userKey: string,
+    quoteKey: string,
+    author?: string,
+    text?: string,
+    tags?: string[],
+    reference?: string,
+  ) {
+    const updatedQuote = await QuoteModel.update(
+      { userKey, quoteKey },
+      {
+        ...(author && { author }),
+        ...(text && { text }),
+        ...(tags && { tags }),
+        ...(reference && { reference }),
+      },
+    );
+
+    return updatedQuote;
+  }
+
+  async deleteQuote(userKey: string, quoteKey: string) {
+    try {
+      await QuoteModel.delete({ userKey, quoteKey });
+      return `Successfully deleted quote ${quoteKey}`;
+    } catch (ex) {
+      return ex.message;
+    }
+  }
+
   async initializeQuotesDatabase() {
     const DynamoTable = new dynamoose.Table('quotes', [QuoteModel]);
     try {
