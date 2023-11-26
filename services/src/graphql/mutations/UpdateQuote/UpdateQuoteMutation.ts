@@ -1,7 +1,7 @@
 import { Arg, Mutation, Resolver } from 'type-graphql';
 import { DBService } from '../../../database/DBService';
-import { Service } from 'typedi';
-import { UpdateQuoteInput } from '../../inputs/UpdateQuoteInput';
+import Container, { Service } from 'typedi';
+import { UpdateQuoteInput } from './UpdateQuoteInput';
 import { QuoteOutput } from '../../outputs/quote';
 
 @Service()
@@ -10,7 +10,7 @@ export class UpdateQuoteMutation {
   private dbService: DBService;
 
   constructor() {
-    this.dbService = new DBService();
+    this.dbService = Container.get(DBService);
   }
 
   @Mutation(() => QuoteOutput)
