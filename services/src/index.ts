@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { ApolloServer } from 'apollo-server-express'; // TODO: fix linting for single quotes
+import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import { buildSchema } from 'type-graphql';
 import { PingResolver } from './graphql/queries/PingResolver';

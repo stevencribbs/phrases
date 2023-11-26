@@ -1,7 +1,7 @@
 import { Arg, Mutation, Resolver } from 'type-graphql';
 import { DBService } from '../../../database/DBService';
-import { Service } from 'typedi';
-import { DeleteQuoteInput } from '../../inputs/DeleteQuoteInput';
+import Container, { Service } from 'typedi';
+import { DeleteQuoteInput } from './DeleteQuoteInput';
 import { DeleteQuoteResult } from '../../outputs/quote';
 
 @Service()
@@ -10,7 +10,7 @@ export class DeleteQuoteMutation {
   private dbService: DBService;
 
   constructor() {
-    this.dbService = new DBService();
+    this.dbService = Container.get(DBService);
   }
 
   @Mutation(() => DeleteQuoteResult)

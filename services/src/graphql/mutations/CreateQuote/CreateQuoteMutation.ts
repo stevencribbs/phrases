@@ -1,7 +1,7 @@
 import { Arg, Mutation, Resolver } from 'type-graphql';
 import { DBService } from '../../../database/DBService';
-import { Service } from 'typedi';
-import { CreateQuoteInput } from '../../inputs/CreateQuoteInput';
+import Container, { Service } from 'typedi';
+import { CreateQuoteInput } from './CreateQuoteInput';
 import { QuoteOutput } from '../../outputs/quote';
 
 @Service()
@@ -10,7 +10,7 @@ export class CreateQuoteMutation {
   private dbService: DBService;
 
   constructor() {
-    this.dbService = new DBService();
+    this.dbService = Container.get(DBService);
     // this.dbService.initializeQuotesDatabase();
     // this.dbService.addSeedData();
   }

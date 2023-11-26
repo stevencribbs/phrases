@@ -1,15 +1,16 @@
 import { DBService } from '../../../database/DBService';
 import { Arg, Query, Resolver } from 'type-graphql';
-import { Service } from 'typedi';
+import { Container, Service } from 'typedi';
 import { QuoteOutput } from '../../outputs/quote';
 
-@Service()
+// @Service()
 @Resolver()
 export class QuotesResolver {
-  private dataService: DBService;
-  // constructor(private dataService: DBService) {}
+  dataService: DBService;
+
   constructor() {
-    this.dataService = new DBService();
+    // this.dataService = new DBService(); // using the Container instance allows the use of a single instance across all classes
+    this.dataService = Container.get(DBService);
   }
 
   @Query(() => [QuoteOutput])
