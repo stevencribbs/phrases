@@ -8,10 +8,11 @@ import express from 'express';
 import { buildSchema } from 'type-graphql';
 import { PingResolver } from './graphql/queries/PingResolver';
 import dynamoose from 'dynamoose';
-import { QuotesResolver } from './graphql/queries/QuotesResolver';
-import { CreateQuoteMutation } from './graphql/mutations/CreateQuote/CreateQuoteMutation';
-import { UpdateQuoteMutation } from './graphql/mutations/UpdateQuote/UpdateQuoteMutation';
-import { DeleteQuoteMutation } from './graphql/mutations/DeleteQuote/DeleteQuoteMutation';
+import { PhrasesResolver } from './graphql/queries/PhrasesResolver';
+import { CreatePhraseMutation } from './graphql/mutations/CreatePhrase/CreatePhraseMutation';
+import { UpdatePhraseMutation } from './graphql/mutations/UpdatePhrase/UpdatePhraseMutation';
+import { DeletePhraseMutation } from './graphql/mutations/DeletePhrase/DeletePhraseMutation';
+import { GraphQLError } from 'graphql';
 
 const main = async () => {
   // const dynamoDbEndpoint = 'http://localhost:8000';
@@ -21,15 +22,18 @@ const main = async () => {
   const schema = await buildSchema({
     resolvers: [
       PingResolver,
-      QuotesResolver,
-      CreateQuoteMutation,
-      DeleteQuoteMutation,
-      UpdateQuoteMutation,
+      PhrasesResolver,
+      CreatePhraseMutation,
+      DeletePhraseMutation,
+      UpdatePhraseMutation,
     ],
     validate: true,
   });
 
-  const apolloServer = new ApolloServer({ schema });
+  const apolloServer = new ApolloServer({
+    schema,
+    formatError: (formattedError: GraphQLError) => formattedError, // custom validator can be applied here
+  });
 
   const app = express();
 

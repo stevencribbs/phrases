@@ -1,26 +1,26 @@
 import { Service } from 'typedi';
 import * as dynamoose from 'dynamoose';
-import { QuoteModel } from './models/Quotes';
+import { PhraseModel } from './models/Phrases';
 import { v4 as uuid } from 'uuid';
 
 @Service()
 export class DBService {
-  async getQuotes(userKey: string = 'u123') {
-    const results = await QuoteModel.query('userKey').eq(userKey).exec();
+  async getPhrases(userKey: string = 'u123') {
+    const results = await PhraseModel.query('userKey').eq(userKey).exec();
     return results;
   }
 
-  async createQuote(
+  async createPhrase(
     userKey: string,
     author?: string,
     text?: string,
     tags?: string[],
     reference?: string,
   ) {
-    const newQuoteKey: string = uuid();
-    const result = await QuoteModel.create({
+    const newPhraseKey: string = uuid();
+    const result = await PhraseModel.create({
       userKey,
-      quoteKey: newQuoteKey,
+      phraseKey: newPhraseKey,
       author,
       text,
       tags,
@@ -29,16 +29,16 @@ export class DBService {
     return result;
   }
 
-  async updateQuote(
+  async updatePhrase(
     userKey: string,
-    quoteKey: string,
+    phraseKey: string,
     author?: string,
     text?: string,
     tags?: string[],
     reference?: string,
   ) {
-    const updatedQuote = await QuoteModel.update(
-      { userKey, quoteKey },
+    const updatedPhrase = await PhraseModel.update(
+      { userKey, phraseKey },
       {
         ...(author && { author }),
         ...(text && { text }),
@@ -47,20 +47,20 @@ export class DBService {
       },
     );
 
-    return updatedQuote;
+    return updatedPhrase;
   }
 
-  async deleteQuote(userKey: string, quoteKey: string) {
+  async deletePhrase(userKey: string, phraseKey: string) {
     try {
-      await QuoteModel.delete({ userKey, quoteKey });
-      return `Successfully deleted quote ${quoteKey}`;
+      await PhraseModel.delete({ userKey, phraseKey });
+      return `Successfully deleted phrase ${phraseKey}`;
     } catch (ex) {
       return ex.message;
     }
   }
 
-  async initializeQuotesDatabase() {
-    const DynamoTable = new dynamoose.Table('quotes', [QuoteModel]);
+  async initializePhrasesDatabase() {
+    const DynamoTable = new dynamoose.Table('phrases', [PhraseModel]);
     try {
       const request = await DynamoTable.create({ return: 'request' });
       console.log('DynamoTable create request object:', request);
@@ -70,7 +70,7 @@ export class DBService {
   }
 
   async addSeedData() {
-    const quoteData = [
+    const phraseData = [
       {
         author: 'Albert Einstein',
         text: 'Failure is success in progress.',
@@ -86,12 +86,22 @@ export class DBService {
         text: 'Opportunity is missed by most people because it is dressed in overalls and looks like work.',
         tags: ['Inspiration', 'Determination'],
       },
+      {
+        author: 'Mark Twain',
+        text: "Why not go out on a limb? That's where the fruit is.",
+        tags: ['Inspiration'],
+      },
+      {
+        author: 'William James',
+        text: 'It is our attitude at the beginning of a difficult task which, more than anything else, will affect its successful outcome.',
+        tags: ['Inspiration', 'Positivity'],
+      },
     ];
 
     const userKey = 'u7147';
-    quoteData.map((quote) => {
+    phraseData.map((phrase) => {
       try {
-        this.createQuote(userKey, quote.author, quote.text, quote.tags);
+        this.createPhrase(userKey, phrase.author, phrase.text, phrase.tags);
       } catch (error) {
         console.log({ error });
       }

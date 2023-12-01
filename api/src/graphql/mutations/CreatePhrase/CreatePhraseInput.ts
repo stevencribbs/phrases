@@ -3,7 +3,7 @@ import { IsArray, MaxLength, ValidateNested } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 
 @InputType()
-export class CreateQuoteInput {
+export class CreatePhraseInput {
   @Field()
   userKey: string;
 

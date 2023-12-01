@@ -1,35 +1,35 @@
 import { Arg, Mutation, Resolver } from 'type-graphql';
 import { DBService } from '../../../database/DBService';
 import Container, { Service } from 'typedi';
-import { UpdateQuoteInput } from './UpdateQuoteInput';
-import { QuoteOutput } from '../../outputs/quote';
+import { UpdatePhraseInput } from './UpdatePhraseInput';
+import { PhraseOutput } from '../../outputs/phrase';
 
 @Service()
 @Resolver()
-export class UpdateQuoteMutation {
+export class UpdatePhraseMutation {
   private dbService: DBService;
 
   constructor() {
     this.dbService = Container.get(DBService);
   }
 
-  @Mutation(() => QuoteOutput)
-  async updateQuote(
-    @Arg('quote')
-    { userKey, quoteKey, author, text, tags, reference }: UpdateQuoteInput,
-  ): Promise<QuoteOutput> {
-    console.log('in updateQuote mutation');
+  @Mutation(() => PhraseOutput)
+  async updatePhrase(
+    @Arg('phrase')
+    { userKey, phraseKey, author, text, tags, reference }: UpdatePhraseInput,
+  ): Promise<PhraseOutput> {
+    console.log('in updatePhrase mutation');
     //TODO: userKey should come from context
     //try {
-    const newQuote = await this.dbService.updateQuote(
+    const newPhrase = await this.dbService.updatePhrase(
       userKey,
-      quoteKey,
+      phraseKey,
       author,
       text,
       tags,
       reference,
     );
-    return newQuote;
+    return newPhrase;
     // }
     // catch(error) {
     //   console.log({error});
