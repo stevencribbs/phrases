@@ -3,7 +3,7 @@ const phraseData = require('./seedData');
 const uuid = require('uuid');
 
 const userKey = 'u123';
-const phrasesTableName = 'phrasetastic2';
+const phrasesTableName = 'phrasetastic3';
 
 // AWS.config.update({
 //   region: 'local',
@@ -19,18 +19,23 @@ const client = new Dynamo.DynamoDBClient({
 // const clientConfig = new DynamoDBClientConfigType({ accesKeyId: 'fakekey' });
 
 const addBatchData = async () => {
+  // console.log(phraseData);
   const ItemsArray = phraseData.map((element) => {
+    console.log({ element });
     const requestItem = {
       PutRequest: {
         Item: {
           userKey: { S: userKey },
           phraseKey: { S: uuid.v4() },
-          author: { S: element.author },
-          text: { S: element.text },
-          tags: { SS: element.tags },
+          ...(element.author ? { author: { S: element.author } } : undefined),
+          ...(element.source ? { source: { S: element.source } } : undefined),
+          text: { S: element.text ?? '' },
+          ...(element.tags ? { tags: { SS: element.tags } } : undefined),
+          type: { S: element.type ?? 'quote' },
         },
       },
     };
+    console.log(requestItem.PutRequest.Item);
     return requestItem;
   });
   const command = new Dynamo.BatchWriteItemCommand({
