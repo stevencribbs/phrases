@@ -1,17 +1,52 @@
 const Dynamo = require('@aws-sdk/client-dynamodb');
-// import { CreateTableCommand, DynamoDBClient } from '@aws-sdk/client-dynamodb';
-// import { DynamoDBClientConfigType } from '@smithy/types';
+const phraseData = require('./seedData');
+const uuid = require('uuid');
 
+const userKey = 'u123';
+const phrasesTableName = 'phrasetastic2';
+
+// AWS.config.update({
+//   region: 'local',
+//   endpoint: 'http://localhost:8000',
+//   accessKeyId: 'fakekey',
+// });
+
+const client = new Dynamo.DynamoDBClient({
+  endpoint: 'http://localhost:8000',
+  region: 'local',
+  accesKeyId: 'fakekey',
+});
 // const clientConfig = new DynamoDBClientConfigType({ accesKeyId: 'fakekey' });
 
-const main = async () => {
-  const client = new Dynamo.DynamoDBClient({
-    endpoint: 'http://localhost:8000',
-    region: 'local',
-    accesKeyId: 'fakekey',
+const addBatchData = async () => {
+  const ItemsArray = phraseData.map((element) => {
+    const requestItem = {
+      PutRequest: {
+        Item: {
+          userKey: { S: userKey },
+          phraseKey: { S: uuid.v4() },
+          author: { S: element.author },
+          text: { S: element.text },
+          tags: { SS: element.tags },
+        },
+      },
+    };
+    return requestItem;
   });
+  const command = new Dynamo.BatchWriteItemCommand({
+    RequestItems: {
+      [phrasesTableName]: ItemsArray,
+    },
+  });
+
+  const response = await client.send(command);
+  console.log('BatchWriteResponse: ' + response);
+  return response;
+};
+
+const createTable = async () => {
   const command = new Dynamo.CreateTableCommand({
-    TableName: 'Scranton2',
+    TableName: phrasesTableName,
     AttributeDefinitions: [
       {
         AttributeName: 'userKey',
@@ -43,30 +78,15 @@ const main = async () => {
   return response;
 };
 
-main();
+const main = async () => {
+  console.log(process.argv);
+  if (process.argv.includes('-i')) {
+    await createTable();
+  }
 
-// AWS.config.update({
-//   region: 'local',
-//   endpoint: 'http://localhost:8000',
-// });
-// var dynamodb = new AWS.DynamoDB();
-// var params = {
-//   TableName: 'Scranton',
-//   KeySchema: [
-//     { AttributeName: 'userKey', KeyType: 'HASH' }, //Partition key
-//     { AttributeName: 'phraseKey', KeyType: 'RANGE' }, //Sort key
-//   ],
-//   AttributeDefinitions: [{ AttributeName: 'userKey', AttributeType: 'S' }],
-//   AttributeDefinitions: [{ AttributeName: 'phraseKey', AttributeType: 'S' }],
-//   ProvisionedThroughput: {
-//     ReadCapacityUnits: 5,
-//     WriteCapacityUnits: 5,
-//   },
-// };
-// dynamodb.createTable(params, function (err, data) {
-//   if (err) {
-//     console.error('Error JSON.', JSON.stringify(err, null, 2));
-//   } else {
-//     console.log('Created table.', JSON.stringify(data, null, 2));
-//   }
-// });
+  if (process.argv.includes('-p')) {
+    await addBatchData();
+  }
+};
+
+main();

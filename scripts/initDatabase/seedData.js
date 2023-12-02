@@ -1,4 +1,4 @@
-const phraseData = [
+const phrases = [
   {
     author: 'Albert Einstein',
     text: 'Failure is success in progress.',
@@ -25,3 +25,5 @@ const phraseData = [
     tags: ['Inspiration', 'Positivity'],
   },
 ];
+
+module.exports = phrases;
