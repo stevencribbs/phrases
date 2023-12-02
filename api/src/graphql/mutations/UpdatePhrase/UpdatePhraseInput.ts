@@ -1,13 +1,13 @@
-import { IsArray, MaxLength } from 'class-validator';
+import { IsArray, Length, MaxLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 
 @InputType()
-export class UpdateQuoteInput {
+export class UpdatePhraseInput {
   @Field()
   userKey: string;
 
   @Field()
-  quoteKey: string;
+  phraseKey: string;
 
   @Field({ nullable: true })
   author?: string;
@@ -23,5 +23,6 @@ export class UpdateQuoteInput {
   tags?: string[];
 
   @Field({ nullable: true })
+  @Length(1, 5)
   reference?: string;
 }

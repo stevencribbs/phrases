@@ -1,30 +1,30 @@
 import { Schema, model } from 'dynamoose';
 import { Item } from 'dynamoose/dist/Item';
 
-export class Quote extends Item {
+export class Phrase extends Item {
   userKey: string;
-  quoteKey: string;
+  phraseKey: string;
   text: string;
   author: string;
-  quoteDate: string;
+  phraseDate: string;
   tags: string[];
   reference: string;
   dateCreated: string;
   dateUpdated: string;
 }
 
-export const quoteSchema = new Schema({
+export const phraseSchema = new Schema({
   userKey: {
     type: String,
     hashKey: true,
   },
-  quoteKey: {
+  phraseKey: {
     type: String,
     rangeKey: true,
   },
   text: String,
   author: String,
-  quoteDate: String,
+  phraseDate: String,
   reference: String,
   tags: {
     type: Array,
@@ -37,4 +37,4 @@ export const quoteSchema = new Schema({
   dateUpdated: String,
 });
 
-export const QuoteModel = model<Quote>('quotes', quoteSchema);
+export const PhraseModel = model<Phrase>('phrases', phraseSchema);

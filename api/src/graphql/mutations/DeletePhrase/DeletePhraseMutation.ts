@@ -1,27 +1,27 @@
 import { Arg, Mutation, Resolver } from 'type-graphql';
 import { DBService } from '../../../database/DBService';
 import Container, { Service } from 'typedi';
-import { DeleteQuoteInput } from './DeleteQuoteInput';
-import { DeleteQuoteResult } from '../../outputs/quote';
+import { DeletePhraseInput } from './DeletePhraseInput';
+import { DeletePhraseResult } from '../../outputs/phrase';
 
 @Service()
 @Resolver()
-export class DeleteQuoteMutation {
+export class DeletePhraseMutation {
   private dbService: DBService;
 
   constructor() {
     this.dbService = Container.get(DBService);
   }
 
-  @Mutation(() => DeleteQuoteResult)
-  async deleteQuote(
-    @Arg('deleteQuoteInput')
-    { userKey, quoteKey }: DeleteQuoteInput,
-  ): Promise<DeleteQuoteResult> {
-    console.log('in deleteQuote mutation');
+  @Mutation(() => DeletePhraseResult)
+  async deletePhrase(
+    @Arg('deletePhraseInput')
+    { userKey, phraseKey }: DeletePhraseInput,
+  ): Promise<DeletePhraseResult> {
+    console.log('in deletePhrase mutation');
     //TODO: userKey should come from context
     //try {
-    const result = await this.dbService.deleteQuote(userKey, quoteKey);
+    const result = await this.dbService.deletePhrase(userKey, phraseKey);
     return { result };
     // }
     // catch(error) {

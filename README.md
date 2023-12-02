@@ -1,3 +1,3 @@
-# quotes
+# phrases
 
-Quotes is a sample project providing a playground for working with GraphQL, TypeGraphQL, DynamoDB, and Dynamoose.
+Phrases is a sample project providing a playground for working with GraphQL, TypeGraphQL, DynamoDB, and Dynamoose.

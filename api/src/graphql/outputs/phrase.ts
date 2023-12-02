@@ -1,13 +1,13 @@
-import { Quote } from '../../database/models/Quotes';
+import { Phrase } from '../../database/models/Phrases';
 import { Field, ObjectType } from 'type-graphql';
 
-@ObjectType('Quote')
-export class QuoteOutput implements Partial<Quote> {
+@ObjectType('Phrase')
+export class PhraseOutput implements Partial<Phrase> {
   @Field()
   public userKey: string;
 
   @Field()
-  public quoteKey: string;
+  public phraseKey: string;
 
   @Field({ nullable: true })
   public author?: string;
@@ -22,8 +22,8 @@ export class QuoteOutput implements Partial<Quote> {
   public reference?: string;
 }
 
-@ObjectType('DeleteQuoteResult')
-export class DeleteQuoteResult {
+@ObjectType('DeletePhraseResult')
+export class DeletePhraseResult {
   @Field()
   public result: string;
 }

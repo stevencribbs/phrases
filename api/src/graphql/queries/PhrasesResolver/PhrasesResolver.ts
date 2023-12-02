@@ -1,11 +1,11 @@
 import { DBService } from '../../../database/DBService';
 import { Arg, Query, Resolver } from 'type-graphql';
 import { Container, Service } from 'typedi';
-import { QuoteOutput } from '../../outputs/quote';
+import { PhraseOutput } from '../../outputs/phrase';
 
 // @Service()
 @Resolver()
-export class QuotesResolver {
+export class PhrasesResolver {
   dataService: DBService;
 
   constructor() {
@@ -13,18 +13,18 @@ export class QuotesResolver {
     this.dataService = Container.get(DBService);
   }
 
-  @Query(() => [QuoteOutput])
-  async quotesForUser(@Arg('userKey') userKey: string) {
-    console.log('call getQuotes');
+  @Query(() => [PhraseOutput])
+  async phrasesForUser(@Arg('userKey') userKey: string) {
+    console.log('call getPhrases');
     // try{
     // const userKey = 'u123';
     //TODO: validate userKey and return error if needed
-    const quotes = await this.dataService.getQuotes(userKey);
+    const phrases = await this.dataService.getPhrases(userKey);
     // }
     // catch (ex) {
     //   console.log({ex})
     // }
     //TODO: return should be an object with a 'data' property and lso handle for errors
-    return quotes;
+    return phrases;
   }
 }

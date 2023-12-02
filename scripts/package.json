@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.462.0",
+    "@smithy/types": "^2.6.0"
+  }
+}
