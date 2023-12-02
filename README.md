@@ -2,13 +2,19 @@
 
 Phrases is a sample project providing a playground for working with GraphQL, TypeGraphQL, DynamoDB, and Dynamoose.
 
-# Initializing the Database
-From the scripts directory, run the `initDatabase` script to create and/or populate the initial database.
+# Getting Started
+
+## Setup DynamoDB
+You will want to set up a local instance of DynamoDB.  This can be a local install or a docker-based container.  
+The database should be accessible through the endpoint `http://localhost:8000`.  
+
+## Initializing the Database
+From the scripts directory, run the `initDatabase` script to create and/or populate the initial database.  
 `node initDatabase/initDatabase.js -i -p`
 - -i will initialize, or create, the table
 - -p will populate the table with an initial set of data
 
-## Validating the Database
+### Validating the Database
 The AWS CLI can be used to list the local tables and data within the tables
 - to list the tables:  
 `aws dynamodb list-tables --endpoint-url http://localhost:8000 --region local`
@@ -16,8 +22,8 @@ The AWS CLI can be used to list the local tables and data within the tables
 `aws dynamodb scan --table-name phrases --endpoint-url http://localhost:8000 --region local`
 
 
-# Data Structure
-The expected data structure for phrases is:
+## Data Structure
+The expected data structure for an individual phrase is:
 
 ```javascript
 {
