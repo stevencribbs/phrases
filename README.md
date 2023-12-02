@@ -10,15 +10,16 @@ From the scripts directory, run the `initDatabase` script to create and/or popul
 
 ## Validating the Database
 The AWS CLI can be used to list the local tables and data within the tables
-- to list the tables
+- to list the tables: 
 `aws dynamodb list-tables --endpoint-url http://localhost:8000 --region local`
-- to list data within a table
+- to list data within a table: 
 `aws dynamodb scan --table-name phrases --endpoint-url http://localhost:8000 --region local`
 
 
 # Data Structure
 The expected data structure for phrases is:
-{
+
+```{
   userKey: string,  // hash key: unique identifier for users
   phraseKey: string,  // range key: unique identifier for phrases
   author: string,
@@ -26,4 +27,4 @@ The expected data structure for phrases is:
   text: string,
   tags: string[],
   type: string,  // enum: quote, fact, verse
-}
+}```
