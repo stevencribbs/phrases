@@ -15,8 +15,8 @@ import { DeletePhraseMutation } from './graphql/mutations/DeletePhrase/DeletePhr
 import { GraphQLError } from 'graphql';
 
 const main = async () => {
-  // const dynamoDbEndpoint = 'http://localhost:8000';
-  const dynamoDbEndpoint = 'http://localstack.localhost.rktsvc.com:4566';
+  const dynamoDbEndpoint = 'http://localhost:8000';
+  // const dynamoDbEndpoint = 'http://localstack.localhost.rktsvc.com:4566';
   dynamoose.aws.ddb.local(dynamoDbEndpoint);
 
   const schema = await buildSchema({

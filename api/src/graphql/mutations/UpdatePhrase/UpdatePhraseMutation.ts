@@ -16,7 +16,15 @@ export class UpdatePhraseMutation {
   @Mutation(() => PhraseOutput)
   async updatePhrase(
     @Arg('phrase')
-    { userKey, phraseKey, author, text, tags, reference }: UpdatePhraseInput,
+    {
+      userKey,
+      phraseKey,
+      author,
+      phraseType,
+      text,
+      tags,
+      source,
+    }: UpdatePhraseInput,
   ): Promise<PhraseOutput> {
     console.log('in updatePhrase mutation');
     //TODO: userKey should come from context
@@ -25,9 +33,10 @@ export class UpdatePhraseMutation {
       userKey,
       phraseKey,
       author,
+      phraseType,
       text,
       tags,
-      reference,
+      source,
     );
     return newPhrase;
     // }

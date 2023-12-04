@@ -18,7 +18,7 @@ export class CreatePhraseMutation {
   @Mutation(() => PhraseOutput)
   async createPhrase(
     @Arg('phrase')
-    { userKey, author, text, tags, reference }: CreatePhraseInput,
+    { userKey, author, phraseType, text, tags, source }: CreatePhraseInput,
   ): Promise<PhraseOutput> {
     console.log('in createPhrase mutation');
     //TODO: userKey should come from context
@@ -26,9 +26,10 @@ export class CreatePhraseMutation {
     const newPhrase = await this.dbService.createPhrase(
       userKey,
       author,
+      phraseType,
       text,
       tags,
-      reference,
+      source,
     );
     return newPhrase;
     // }

@@ -13,13 +13,16 @@ export class PhraseOutput implements Partial<Phrase> {
   public author?: string;
 
   @Field({ nullable: true })
+  public phraseType?: string;
+
+  @Field({ nullable: true })
   public text?: string;
 
   @Field(() => [String], { nullable: true })
   public tags?: string[];
 
   @Field({ nullable: true })
-  public reference?: string;
+  public source?: string;
 }
 
 @ObjectType('DeletePhraseResult')
