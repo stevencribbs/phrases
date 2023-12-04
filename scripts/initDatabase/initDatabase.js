@@ -125,14 +125,14 @@ const createTable = async () => {
 };
 
 const main = async () => {
-  if (process.argv.includes('-if')) {
+  if (process.argv.includes('-init')) {
     await deleteTable();
     await createTable();
   } else {
     if (process.argv.includes('-d')) {
       await deleteTable();
     }
-    if (process.argv.includes('-i')) {
+    if (process.argv.includes('-c')) {
       await createTable();
     }
   }

@@ -11,7 +11,9 @@ The database should be accessible through the endpoint `http://localhost:8000`.
 ## Initializing the Database
 From the scripts directory, run the `initDatabase` script to create and/or populate the initial database.  
 `node initDatabase/initDatabase.js -i -p`
-- -i will initialize, or create, the table
+- -init will initialize the table (delete the table if it exists; and, then create a new table)
+- -c will create the table if it does not already exist
+- -d will delete the table if it exists
 - -p will populate the table with an initial set of data
 
 ### Validating the Database
