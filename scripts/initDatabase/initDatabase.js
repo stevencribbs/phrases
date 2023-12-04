@@ -1,9 +1,20 @@
-const Dynamo = require('@aws-sdk/client-dynamodb');
+const DynamoDBClient = require('@aws-sdk/client-dynamodb');
 const phraseData = require('./seedData');
 const uuid = require('uuid');
+const DynamoDBLib = require('@aws-sdk/lib-dynamodb');
+// import {
+//   BatchWriteCommand,
+//   DeleteCommand,
+//   DynamoDBDocumentClient,
+//   GetCommand,
+//   PutCommand,
+//   UpdateCommand,
+//   paginateQuery,
+//   paginateScan,
+// } from '@aws-sdk/lib-dynamodb';
 
 const userKey = 'u123';
-const phrasesTableName = 'phrasetastic3';
+const phrasesTableName = 'phrases';
 
 // AWS.config.update({
 //   region: 'local',
@@ -11,46 +22,71 @@ const phrasesTableName = 'phrasetastic3';
 //   accessKeyId: 'fakekey',
 // });
 
-const client = new Dynamo.DynamoDBClient({
+// const clientConfig = new DynamoDBClientConfigType({ accesKeyId: 'fakekey' });
+const client = new DynamoDBClient.DynamoDBClient({
   endpoint: 'http://localhost:8000',
   region: 'local',
   accesKeyId: 'fakekey',
 });
-// const clientConfig = new DynamoDBClientConfigType({ accesKeyId: 'fakekey' });
+const docClient = DynamoDBLib.DynamoDBDocumentClient.from(client);
 
 const addBatchData = async () => {
-  // console.log(phraseData);
   const ItemsArray = phraseData.map((element) => {
-    console.log({ element });
+    element.userKey = userKey;
+    element.phraseKey = uuid.v4();
     const requestItem = {
       PutRequest: {
-        Item: {
-          userKey: { S: userKey },
-          phraseKey: { S: uuid.v4() },
-          ...(element.author ? { author: { S: element.author } } : undefined),
-          ...(element.source ? { source: { S: element.source } } : undefined),
-          text: { S: element.text ?? '' },
-          ...(element.tags ? { tags: { SS: element.tags } } : undefined),
-          type: { S: element.type ?? 'quote' },
-        },
+        Item: element,
       },
     };
-    console.log(requestItem.PutRequest.Item);
     return requestItem;
   });
-  const command = new Dynamo.BatchWriteItemCommand({
+  console.log(ItemsArray);
+  const command = new DynamoDBLib.BatchWriteCommand({
     RequestItems: {
       [phrasesTableName]: ItemsArray,
     },
   });
 
-  const response = await client.send(command);
-  console.log('BatchWriteResponse: ' + response);
-  return response;
+  console.log(`populating table ${phrasesTableName} with initial data set`);
+  try {
+    const response = await docClient.send(command);
+    console.log('table populated');
+    console.log('BatchWriteResponse: ' + response);
+  } catch (err) {
+    if (err.message.includes('non-existent table')) {
+      console.log(
+        `Could not populate table. The table "${phrasesTableName}" does not exist.`
+      );
+    } else {
+      console.log('BatchWriteResponse: ' + err);
+    }
+  }
+};
+
+const deleteTable = async () => {
+  const command = new DynamoDBClient.DeleteTableCommand({
+    TableName: phrasesTableName,
+  });
+  console.log(`deleting table: ${phrasesTableName}`);
+  try {
+    const response = await client.send(command);
+    console.log('table deleted');
+    console.log(response);
+    // return response;
+  } catch (err) {
+    if (err.message.includes('non-existent table')) {
+      console.log(
+        `Could not delete table. The table "${phrasesTableName}" does not exist.`
+      );
+    } else {
+      console.log(err);
+    }
+  }
 };
 
 const createTable = async () => {
-  const command = new Dynamo.CreateTableCommand({
+  const command = new DynamoDBClient.CreateTableCommand({
     TableName: phrasesTableName,
     AttributeDefinitions: [
       {
@@ -78,15 +114,27 @@ const createTable = async () => {
     },
   });
 
-  const response = await client.send(command);
-  console.log(response);
-  return response;
+  console.log(`creating table: ${phrasesTableName}`);
+  try {
+    const response = await client.send(command);
+    console.log('table created');
+    console.log(response);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const main = async () => {
-  console.log(process.argv);
-  if (process.argv.includes('-i')) {
+  if (process.argv.includes('-if')) {
+    await deleteTable();
     await createTable();
+  } else {
+    if (process.argv.includes('-d')) {
+      await deleteTable();
+    }
+    if (process.argv.includes('-i')) {
+      await createTable();
+    }
   }
 
   if (process.argv.includes('-p')) {

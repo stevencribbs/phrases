@@ -13,6 +13,9 @@ export class UpdatePhraseInput {
   author?: string;
 
   @Field({ nullable: true })
+  phraseType?: string;
+
+  @Field({ nullable: true })
   text?: string;
 
   @Field(() => [String], { nullable: true })
@@ -24,5 +27,5 @@ export class UpdatePhraseInput {
 
   @Field({ nullable: true })
   @Length(1, 5)
-  reference?: string;
+  source?: string;
 }

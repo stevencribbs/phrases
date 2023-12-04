@@ -13,18 +13,20 @@ export class DBService {
   async createPhrase(
     userKey: string,
     author?: string,
+    phraseType?: string,
     text?: string,
     tags?: string[],
-    reference?: string,
+    source?: string,
   ) {
     const newPhraseKey: string = uuid();
     const result = await PhraseModel.create({
       userKey,
       phraseKey: newPhraseKey,
       author,
+      phraseType,
       text,
       tags,
-      reference,
+      source,
     });
     return result;
   }
@@ -33,17 +35,19 @@ export class DBService {
     userKey: string,
     phraseKey: string,
     author?: string,
+    phraseType?: string,
     text?: string,
     tags?: string[],
-    reference?: string,
+    source?: string,
   ) {
     const updatedPhrase = await PhraseModel.update(
       { userKey, phraseKey },
       {
         ...(author && { author }),
+        ...(phraseType && { phraseType }),
         ...(text && { text }),
         ...(tags && { tags }),
-        ...(reference && { reference }),
+        ...(source && { source }),
       },
     );
 
@@ -57,54 +61,5 @@ export class DBService {
     } catch (ex) {
       return ex.message;
     }
-  }
-
-  async initializePhrasesDatabase() {
-    const DynamoTable = new dynamoose.Table('phrases', [PhraseModel]);
-    try {
-      const request = await DynamoTable.create({ return: 'request' });
-      console.log('DynamoTable create request object:', request);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async addSeedData() {
-    const phraseData = [
-      {
-        author: 'Albert Einstein',
-        text: 'Failure is success in progress.',
-        tags: ['Inspiration', 'Persistence'],
-      },
-      {
-        author: 'Vincent Van Gogh',
-        text: 'Great things are not done by impulse, but by a series of small things brought together.',
-        tags: ['Inspiration', 'Persistence'],
-      },
-      {
-        author: 'Thomas Jefferson',
-        text: 'Opportunity is missed by most people because it is dressed in overalls and looks like work.',
-        tags: ['Inspiration', 'Determination'],
-      },
-      {
-        author: 'Mark Twain',
-        text: "Why not go out on a limb? That's where the fruit is.",
-        tags: ['Inspiration'],
-      },
-      {
-        author: 'William James',
-        text: 'It is our attitude at the beginning of a difficult task which, more than anything else, will affect its successful outcome.',
-        tags: ['Inspiration', 'Positivity'],
-      },
-    ];
-
-    const userKey = 'u7147';
-    phraseData.map((phrase) => {
-      try {
-        this.createPhrase(userKey, phrase.author, phrase.text, phrase.tags);
-      } catch (error) {
-        console.log({ error });
-      }
-    });
   }
 }

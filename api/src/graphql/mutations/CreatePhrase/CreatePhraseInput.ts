@@ -10,6 +10,9 @@ export class CreatePhraseInput {
   @Field({ nullable: true })
   author?: string;
 
+  @Field({ nullable: true, defaultValue: 'quote' })
+  phraseType?: string;
+
   @Field({ nullable: true })
   text?: string;
 
@@ -21,5 +24,5 @@ export class CreatePhraseInput {
   tags?: string[];
 
   @Field({ nullable: true })
-  reference?: string;
+  source?: string;
 }

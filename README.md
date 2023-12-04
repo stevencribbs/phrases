@@ -33,6 +33,6 @@ The expected data structure for an individual phrase is:
   source: string,
   text: string,
   tags: string[],
-  type: string,  // enum: quote, fact, verse
+  phraseType: string,  // enum: quote, fact, verse
 }
 ```

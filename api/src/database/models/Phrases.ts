@@ -8,7 +8,8 @@ export class Phrase extends Item {
   author: string;
   phraseDate: string;
   tags: string[];
-  reference: string;
+  phraseType: string;
+  source: string;
   dateCreated: string;
   dateUpdated: string;
 }
@@ -25,11 +26,12 @@ export const phraseSchema = new Schema({
   text: String,
   author: String,
   phraseDate: String,
-  reference: String,
+  source: String,
   tags: {
     type: Array,
     schema: [String],
   },
+  phraseType: String,
   dateCreated: {
     type: String,
     default: 'today',
