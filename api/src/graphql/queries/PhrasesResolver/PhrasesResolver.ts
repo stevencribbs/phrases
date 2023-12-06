@@ -27,4 +27,16 @@ export class PhrasesResolver {
     //TODO: return should be an object with a 'data' property and lso handle for errors
     return phrases;
   }
+
+  @Query(() => [PhraseOutput])
+  async phrasesByType(
+    @Arg('userKey') userKey: string,
+    @Arg('phraseType') phraseType: string,
+  ) {
+    const phrases = await this.dataService.getPhrasesByType(
+      userKey,
+      phraseType,
+    );
+    return phrases;
+  }
 }
