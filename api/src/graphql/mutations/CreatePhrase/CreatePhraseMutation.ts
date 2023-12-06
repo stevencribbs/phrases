@@ -11,8 +11,6 @@ export class CreatePhraseMutation {
 
   constructor() {
     this.dbService = Container.get(DBService);
-    // this.dbService.initializePhrasesDatabase();
-    // this.dbService.addSeedData();
   }
 
   @Mutation(() => PhraseOutput)

@@ -86,6 +86,7 @@ const deleteTable = async () => {
 };
 
 const createTable = async () => {
+  // Info on syntax can be found in the API reference for CreateTable at https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html
   const command = new DynamoDBClient.CreateTableCommand({
     TableName: phrasesTableName,
     AttributeDefinitions: [
@@ -97,7 +98,30 @@ const createTable = async () => {
         AttributeName: 'phraseKey',
         AttributeType: 'S',
       },
+      {
+        AttributeName: 'phraseType',
+        AttributeType: 'S',
+      },
     ],
+    // GlobalSecondaryIndexes: [
+    //   {
+    //     IndexName: 'string',
+    //     KeySchema: [
+    //       {
+    //         AttributeName: 'string',
+    //         KeyType: 'string',
+    //       },
+    //     ],
+    //     Projection: {
+    //       NonKeyAttributes: ['string'],
+    //       ProjectionType: 'string',
+    //     },
+    //     ProvisionedThroughput: {
+    //       ReadCapacityUnits: number,
+    //       WriteCapacityUnits: number,
+    //     },
+    //   },
+    // ],
     KeySchema: [
       {
         AttributeName: 'userKey',
@@ -106,6 +130,24 @@ const createTable = async () => {
       {
         AttributeName: 'phraseKey',
         KeyType: 'RANGE',
+      },
+    ],
+    LocalSecondaryIndexes: [
+      {
+        IndexName: 'phraseTypeIndex',
+        KeySchema: [
+          {
+            AttributeName: 'userKey',
+            KeyType: 'HASH',
+          },
+          {
+            AttributeName: 'phraseType',
+            KeyType: 'RANGE',
+          },
+        ],
+        Projection: {
+          ProjectionType: 'ALL',
+        },
       },
     ],
     ProvisionedThroughput: {
