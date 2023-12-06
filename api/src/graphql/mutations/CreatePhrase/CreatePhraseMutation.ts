@@ -4,7 +4,7 @@ import Container, { Service } from 'typedi';
 import { CreatePhraseInput } from './CreatePhraseInput';
 import { PhraseOutput } from '../../outputs/phrase';
 
-// @Service()
+@Service()
 @Resolver()
 export class CreatePhraseMutation {
   private dbService: DBService;

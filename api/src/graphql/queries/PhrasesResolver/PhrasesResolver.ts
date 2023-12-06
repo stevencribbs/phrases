@@ -3,7 +3,7 @@ import { Arg, Query, Resolver } from 'type-graphql';
 import { Container, Service } from 'typedi';
 import { PhraseOutput } from '../../outputs/phrase';
 
-// @Service()
+@Service()
 @Resolver()
 export class PhrasesResolver {
   dataService: DBService;
