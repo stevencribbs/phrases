@@ -2,7 +2,7 @@ import { Arg, Mutation, Resolver } from 'type-graphql';
 import { DBService } from '../../../database/DBService';
 import Container, { Service } from 'typedi';
 import { DeletePhraseInput } from './DeletePhraseInput';
-import { DeletePhraseResult } from '../../outputs/phrase';
+import { DeletePhraseResult, PhraseDeletedOutput } from './DeletePhraseResult';
 
 @Service()
 @Resolver()
@@ -17,16 +17,15 @@ export class DeletePhraseMutation {
   async deletePhrase(
     @Arg('deletePhraseInput')
     { userKey, phraseKey }: DeletePhraseInput,
-  ): Promise<DeletePhraseResult> {
+  ): Promise<typeof DeletePhraseResult> {
     console.log('in deletePhrase mutation');
     //TODO: userKey should come from context
-    //try {
     const result = await this.dbService.deletePhrase(userKey, phraseKey);
-    return { result };
-    // }
-    // catch(error) {
-    //   console.log({error});
-    //   return;
-    // }
+    console.log(`deletePhrase returned: ${result}`);
+
+    const resultOutput = new PhraseDeletedOutput();
+    resultOutput.result = result;
+
+    return resultOutput;
   }
 }

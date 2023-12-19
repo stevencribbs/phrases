@@ -2,7 +2,7 @@ import { Arg, Mutation, Resolver } from 'type-graphql';
 import { DBService } from '../../../database/DBService';
 import Container, { Service } from 'typedi';
 import { UpdatePhraseInput } from './UpdatePhraseInput';
-import { PhraseOutput } from '../../outputs/phrase';
+import { PhraseUpdatedOutput } from './UpdatePhraseResult';
 
 @Service()
 @Resolver()
@@ -13,7 +13,7 @@ export class UpdatePhraseMutation {
     this.dbService = Container.get(DBService);
   }
 
-  @Mutation(() => PhraseOutput)
+  @Mutation(() => PhraseUpdatedOutput)
   async updatePhrase(
     @Arg('phrase')
     {
@@ -25,10 +25,9 @@ export class UpdatePhraseMutation {
       tags,
       source,
     }: UpdatePhraseInput,
-  ): Promise<PhraseOutput> {
+  ): Promise<PhraseUpdatedOutput> {
     console.log('in updatePhrase mutation');
     //TODO: userKey should come from context
-    //try {
     const newPhrase = await this.dbService.updatePhrase(
       userKey,
       phraseKey,
@@ -38,11 +37,6 @@ export class UpdatePhraseMutation {
       tags,
       source,
     );
-    return newPhrase;
-    // }
-    // catch(error) {
-    //   console.log({error});
-    //   return;
-    // }
+    return { phrase: newPhrase };
   }
 }
