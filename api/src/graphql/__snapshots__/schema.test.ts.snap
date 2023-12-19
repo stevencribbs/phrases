@@ -18,18 +18,26 @@ type Phrase {
 }
 
 type Mutation {
-  createPhrase(phrase: CreatePhraseInput!): Phrase!
-  updatePhrase(phrase: UpdatePhraseInput!): Phrase!
+  createPhrase(phrase: CreatePhraseInput!): PhraseCreatedOutput!
+  updatePhrase(phrase: UpdatePhraseInput!): PhraseUpdatedOutput!
   deletePhrase(deletePhraseInput: DeletePhraseInput!): DeletePhraseResult!
+}
+
+type PhraseCreatedOutput {
+  phrase: Phrase!
 }
 
 input CreatePhraseInput {
   userKey: String!
+  phraseType: String!
   author: String
-  phraseType: String = "quote"
   text: String
   tags: [String!]
   source: String
+}
+
+type PhraseUpdatedOutput {
+  phrase: Phrase!
 }
 
 input UpdatePhraseInput {
@@ -42,8 +50,14 @@ input UpdatePhraseInput {
   source: String
 }
 
-type DeletePhraseResult {
+union DeletePhraseResult = PhraseDeletedOutput | GQLError
+
+type PhraseDeletedOutput {
   result: String!
+}
+
+type GQLError {
+  message: String!
 }
 
 input DeletePhraseInput {
