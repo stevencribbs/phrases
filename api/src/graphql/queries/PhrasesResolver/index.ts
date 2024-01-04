@@ -1,1 +1,0 @@
-export { PhrasesResolver } from './PhrasesResolver';
