@@ -20,5 +20,6 @@ export const buildSchema = async () => {
     container: Container,
     // validate: { forbidUnknownValues: false },
     validate: true,
+    // authChecker: checkScopes,
   });
 };

@@ -19,7 +19,6 @@ export class DeletePhraseMutation {
     { userKey, phraseKey }: DeletePhraseInput,
   ): Promise<typeof DeletePhraseResult> {
     console.log('in deletePhrase mutation');
-    //TODO: userKey should come from context
     const result = await this.dbService.deletePhrase(userKey, phraseKey);
     console.log(`deletePhrase returned: ${result}`);
 

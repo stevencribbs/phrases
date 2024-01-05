@@ -6,6 +6,7 @@ import {
   IsNotEmpty,
   IsString,
   MaxLength,
+  MinLength,
   ValidateIf,
 } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
@@ -32,8 +33,9 @@ export class CreatePhraseInput {
   text?: string;
 
   @Field(() => [String], { nullable: true })
-  @IsArray()
   @MaxLength(20, { each: true })
+  @MinLength(2, { each: true })
+  @IsArray()
   tags?: string[];
 
   @Field({ nullable: true })
