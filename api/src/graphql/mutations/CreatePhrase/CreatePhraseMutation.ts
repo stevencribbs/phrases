@@ -19,7 +19,6 @@ export class CreatePhraseMutation {
     { userKey, author, phraseType, text, tags, source }: CreatePhraseInput,
   ): Promise<PhraseCreatedOutput> {
     console.log('in createPhrase mutation');
-    //TODO: userKey should come from context
     const newPhrase = await this.dbService.createPhrase(
       userKey,
       author,
