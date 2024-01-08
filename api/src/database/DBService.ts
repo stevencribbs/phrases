@@ -1,6 +1,7 @@
 import { Service } from 'typedi';
 import { PhraseModel } from './models/Phrases';
 import { v4 as uuid } from 'uuid';
+import { UserModel } from './models/User';
 
 @Service()
 export class DBService {
@@ -72,5 +73,35 @@ export class DBService {
     } catch (ex) {
       return ex.message;
     }
+  }
+
+  async registerUser(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+  ) {
+    const newUserKey: string = uuid();
+    //TODO: create a password hash
+    //TODO: check for unique user - probably by email
+    const newUser = await UserModel.create({
+      userKey: newUserKey,
+      firstName,
+      lastName,
+      email,
+      password,
+    });
+
+    return newUser;
+  }
+
+  async getUser(userKey: string) {
+    const results = await UserModel.query('userKey').eq(userKey).exec();
+    return results;
+  }
+
+  async getUsers() {
+    const results = await UserModel.scan().exec();
+    return results;
   }
 }
