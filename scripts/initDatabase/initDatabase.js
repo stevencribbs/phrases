@@ -15,6 +15,7 @@ const DynamoDBLib = require('@aws-sdk/lib-dynamodb');
 
 const userKey = 'u123';
 const phrasesTableName = 'phrases';
+const usersTableName = 'users';
 
 // AWS.config.update({
 //   region: 'local',
@@ -30,7 +31,7 @@ const client = new DynamoDBClient.DynamoDBClient({
 });
 const docClient = DynamoDBLib.DynamoDBDocumentClient.from(client);
 
-const addBatchData = async () => {
+const addBatchPhraseData = async () => {
   const ItemsArray = phraseData.map((element) => {
     element.userKey = userKey;
     element.phraseKey = uuid.v4();
@@ -64,7 +65,7 @@ const addBatchData = async () => {
   }
 };
 
-const deleteTable = async () => {
+const deletePhraseTable = async () => {
   const command = new DynamoDBClient.DeleteTableCommand({
     TableName: phrasesTableName,
   });
@@ -85,7 +86,7 @@ const deleteTable = async () => {
   }
 };
 
-const createTable = async () => {
+const createPhraseTable = async () => {
   // Info on syntax can be found in the API reference for CreateTable at https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html
   const command = new DynamoDBClient.CreateTableCommand({
     TableName: phrasesTableName,
@@ -166,21 +167,115 @@ const createTable = async () => {
   }
 };
 
+const deleteUserTable = async () => {
+  const command = new DynamoDBClient.DeleteTableCommand({
+    TableName: usersTableName,
+  });
+  console.log(`deleting table: ${usersTableName}`);
+  try {
+    const response = await client.send(command);
+    console.log('table deleted');
+    console.log(response);
+    // return response;
+  } catch (err) {
+    if (err.message.includes('non-existent table')) {
+      console.log(
+        `Could not delete table. The table "${usersTableName}" does not exist.`
+      );
+    } else {
+      console.log(err);
+    }
+  }
+};
+
+const createUserTable = async () => {
+  // Info on syntax can be found in the API reference for CreateTable at https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html
+  const command = new DynamoDBClient.CreateTableCommand({
+    TableName: usersTableName,
+    AttributeDefinitions: [
+      {
+        AttributeName: 'userKey',
+        AttributeType: 'S',
+      },
+    ],
+    KeySchema: [
+      {
+        AttributeName: 'userKey',
+        KeyType: 'HASH',
+      },
+    ],
+    ProvisionedThroughput: {
+      ReadCapacityUnits: 1,
+      WriteCapacityUnits: 1,
+    },
+  });
+
+  console.log(`creating table: ${usersTableName}`);
+  try {
+    const response = await client.send(command);
+    console.log('table created');
+    console.log(response);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const addInitialUser = async () => {
+  const ItemsArray = [
+    {
+      PutRequest: {
+        Item: {
+          userKey: 'u123',
+          firstName: 'Larry',
+          lastName: 'Cucumber',
+          email: 'larry@cucumber.com',
+          password: 'test',
+        },
+      },
+    },
+  ];
+  console.log(ItemsArray);
+  const command = new DynamoDBLib.BatchWriteCommand({
+    RequestItems: {
+      [usersTableName]: ItemsArray,
+    },
+  });
+
+  console.log(`populating table ${usersTableName} with initial data set`);
+  try {
+    const response = await docClient.send(command);
+    console.log('table populated');
+    console.log('BatchWriteResponse: ' + response);
+  } catch (err) {
+    if (err.message.includes('non-existent table')) {
+      console.log(
+        `Could not populate table. The table "${TableName}" does not exist.`
+      );
+    } else {
+      console.log('BatchWriteResponse: ' + err);
+    }
+  }
+};
 const main = async () => {
   if (process.argv.includes('-init')) {
-    await deleteTable();
-    await createTable();
+    await deletePhraseTable();
+    await createPhraseTable();
+    await deleteUserTable();
+    await createUserTable();
   } else {
     if (process.argv.includes('-d')) {
-      await deleteTable();
+      await deletePhraseTable();
+      await deleteUserTable();
     }
     if (process.argv.includes('-c')) {
-      await createTable();
+      await createPhraseTable();
+      await createUserTable();
     }
   }
 
   if (process.argv.includes('-p')) {
-    await addBatchData();
+    await addBatchPhraseData();
+    await addInitialUser();
   }
 };
 
