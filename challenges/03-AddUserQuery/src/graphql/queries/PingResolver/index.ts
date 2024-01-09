@@ -1,0 +1,1 @@
+export { PingResolver } from './PingResolver';
