@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Service schema It should only change intentionally 1`] = `
+"type Query {
+  ping: String!
+  phrasesForUser(userKey: String!): [Phrase!]!
+  phrasesByType(phraseType: String!, userKey: String!): [Phrase!]!
+}
+
+type Phrase {
+  userKey: String!
+  phraseKey: String!
+  author: String
+  phraseType: String
+  text: String
+  tags: [String!]
+  source: String
+}
+
+type Mutation {
+  createPhrase(phrase: CreatePhraseInput!): PhraseCreatedOutput!
+  updatePhrase(phrase: UpdatePhraseInput!): PhraseUpdatedOutput!
+  deletePhrase(deletePhraseInput: DeletePhraseInput!): DeletePhraseResult!
+}
+
+type PhraseCreatedOutput {
+  phrase: Phrase!
+}
+
+input CreatePhraseInput {
+  userKey: String!
+  phraseType: String!
+  author: String
+  text: String
+  tags: [String!]
+  source: String
+}
+
+type PhraseUpdatedOutput {
+  phrase: Phrase!
+}
+
+input UpdatePhraseInput {
+  userKey: String!
+  phraseKey: String!
+  author: String
+  phraseType: String
+  text: String
+  tags: [String!]
+  source: String
+}
+
+union DeletePhraseResult = PhraseDeletedOutput | GQLError
+
+type PhraseDeletedOutput {
+  result: String!
+}
+
+type GQLError {
+  message: String!
+}
+
+input DeletePhraseInput {
+  userKey: String!
+  phraseKey: String!
+}
+"
+`;
