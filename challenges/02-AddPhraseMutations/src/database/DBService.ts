@@ -51,24 +51,21 @@ export class DBService {
     tags?: string[],
     source?: string,
   ) {
-    const updatedPhrase = await PhraseModel.update(
-      { userKey, phraseKey },
-      {
-        ...(author && { author }),
-        ...(phraseType && { phraseType }),
-        ...(text && { text }),
-        ...(tags && { tags }),
-        ...(source && { source }),
-      },
-    );
+    const updatedPhrase = {};
+
+    // TODO: use the PhraseModel.update function to update the phrase in database.
+    // NOTE: the fields to update are optional; if they are not provided, they should
+    //       not be overwritten in the database.
 
     return updatedPhrase;
   }
 
   async deletePhrase(userKey: string, phraseKey: string) {
     try {
-      await PhraseModel.delete({ userKey, phraseKey });
-      return `Successfully deleted phrase ${phraseKey}`;
+      // TODO: use the PhraseModel.delete function to delete the phrase from the database.
+      // NOTE: the return value should be a status message indicating the results of the delete.
+
+      return '';
     } catch (ex) {
       return ex.message;
     }

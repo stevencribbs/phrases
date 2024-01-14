@@ -12,7 +12,7 @@ export class DBService {
 
   async getPhrasesByType(
     userKey: string = 'u123',
-    phraseType: string = 'quote',
+    phraseType: string = 'quote'
   ) {
     const results = await PhraseModel.query('userKey')
       .eq(userKey)
@@ -28,7 +28,7 @@ export class DBService {
     phraseType?: string,
     text?: string,
     tags?: string[],
-    source?: string,
+    source?: string
   ) {
     const newPhraseKey: string = uuid();
     const result = await PhraseModel.create({
@@ -50,7 +50,7 @@ export class DBService {
     phraseType?: string,
     text?: string,
     tags?: string[],
-    source?: string,
+    source?: string
   ) {
     const updatedPhrase = await PhraseModel.update(
       { userKey, phraseKey },
@@ -60,7 +60,7 @@ export class DBService {
         ...(text && { text }),
         ...(tags && { tags }),
         ...(source && { source }),
-      },
+      }
     );
 
     return updatedPhrase;
@@ -73,6 +73,26 @@ export class DBService {
     } catch (ex) {
       return ex.message;
     }
+  }
+
+  async registerUser(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string
+  ) {
+    const newUserKey: string = uuid();
+    // NOTE: This functionality is a basic first iteration and is not secure.
+    // Future iterations will expand the functionality.
+    const newUser = await UserModel.create({
+      userKey: newUserKey,
+      firstName,
+      lastName,
+      email,
+      password,
+    });
+
+    return newUser;
   }
 
   async getUser(userKey: string) {

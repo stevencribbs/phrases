@@ -233,6 +233,17 @@ const addInitialUser = async () => {
         },
       },
     },
+    {
+      PutRequest: {
+        Item: {
+          userKey: 'u456',
+          firstName: 'Bob',
+          lastName: 'Tomato',
+          email: 'bob@tomato.com',
+          password: 'test',
+        },
+      },
+    },
   ];
   console.log(ItemsArray);
   const command = new DynamoDBLib.BatchWriteCommand({
@@ -256,6 +267,7 @@ const addInitialUser = async () => {
     }
   }
 };
+
 const main = async () => {
   if (process.argv.includes('-init')) {
     await deletePhraseTable();
