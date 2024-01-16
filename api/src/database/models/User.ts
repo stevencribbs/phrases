@@ -16,9 +16,12 @@ export const userSchema = new Schema({
     type: String,
     hashKey: true,
   },
+  email: {
+    type: String,
+    rangeKey: true,
+  },
   firstName: String,
   lastName: String,
-  email: String,
   password: String,
   dateCreated: {
     type: String,
