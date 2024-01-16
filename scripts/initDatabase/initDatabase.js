@@ -197,13 +197,39 @@ const createUserTable = async () => {
         AttributeName: 'userKey',
         AttributeType: 'S',
       },
+      {
+        AttributeName: 'email',
+        AttributeType: 'S',
+      },
     ],
     KeySchema: [
       {
         AttributeName: 'userKey',
         KeyType: 'HASH',
       },
+      {
+        AttributeName: 'email',
+        KeyType: 'RANGE',
+      },
     ],
+    // LocalSecondaryIndexes: [
+    //   {
+    //     IndexName: 'userEmailIndex',
+    //     KeySchema: [
+    //       {
+    //         AttributeName: 'email',
+    //         KeyType: 'HASH',
+    //       },
+    //       {
+    //         AttributeName: 'userKey',
+    //         KeyType: 'RANGE',
+    //       },
+    //     ],
+    //     Projection: {
+    //       ProjectionType: 'ALL',
+    //     },
+    //   },
+    // ],
     ProvisionedThroughput: {
       ReadCapacityUnits: 1,
       WriteCapacityUnits: 1,

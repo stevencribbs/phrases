@@ -19,15 +19,6 @@ export class PhraseQueries {
     return phrases;
   }
 
-  @Query(() => [PhraseOutput])
-  async phrasesByType(
-    @Arg('userKey') userKey: string,
-    @Arg('phraseType') phraseType: string,
-  ) {
-    const phrases = await this.dataService.getPhrasesByType(
-      userKey,
-      phraseType,
-    );
-    return phrases;
-  }
+  // CHALLENGE TODO: Add a query to request phrases for a specific user by the 'phraseType'.
+  // NOTE: The database servic already includes a function for retrieving phrases from the database by phraseType.
 }

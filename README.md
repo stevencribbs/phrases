@@ -6,7 +6,9 @@ Phrases is a sample project providing a playground for working with GraphQL, Typ
 
 ## Setup DynamoDB
 You will want to set up a local instance of DynamoDB.  This can be a local install or a docker-based container.  
-The database should be accessible through the endpoint `http://localhost:8000`.  
+The database should be accessible through the endpoint `http://localhost:8000`.
+
+NOTE: To run a docker-based container, an example command is: `docker run -p 8000:8000 amazon/dynamodb-local`
 
 ## Initializing the Database
 From the scripts directory, run the `initDatabase` script to create and/or populate the initial database.  
