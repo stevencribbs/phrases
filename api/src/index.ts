@@ -65,11 +65,6 @@ const main = async () => {
 
   app.use(
     session({
-      // @ts-ignore
-      store: new RedisStore({
-        // @ts-ignore
-        client: redisClient as any,
-      }),
       name: 'qid',
       secret: 'aslkdfjoiq12312',
       resave: false,
