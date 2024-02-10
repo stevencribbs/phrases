@@ -18,8 +18,8 @@ export class IsEmailAlreadyExistConstraint
   }
 
   async validate(email: string) {
-    const results = await this.dbService.getUserByEmail(email);
-    if (results.count > 0) return false;
+    const user = await this.dbService.getUserByEmail(email);
+    if (user != null) return false;
     return true;
   }
 }

@@ -9,14 +9,18 @@ import { UpdatePhraseMutation } from './mutations/UpdatePhrase/UpdatePhraseMutat
 import { DeletePhraseMutation } from './mutations/DeletePhrase/DeletePhraseMutation';
 import { UserQueries } from './queries/UserQueries';
 import { RegisterUserMutation } from './mutations/RegisterUser/RegisterUserMutation';
+import { LoginMutation } from './mutations/Login/Login';
+import { MeResolver } from './queries/MeResolver/Me';
 
 export const buildSchema = async () => {
   return await typeGraphQL.buildSchema({
     resolvers: [
+      MeResolver,
       PingResolver,
       PhraseQueries,
       UserQueries,
       CreatePhraseMutation,
+      LoginMutation,
       DeletePhraseMutation,
       UpdatePhraseMutation,
       RegisterUserMutation,

@@ -4,6 +4,11 @@ Phrases is a sample project providing a playground for working with GraphQL, Typ
 
 # Getting Started
 
+## Install Redis
+The application uses Redis for caching user logins.  Redis will need to be installed prior to running the service.
+
+`brew install redis`
+
 ## Setup DynamoDB
 You will want to set up a local instance of DynamoDB.  This can be a local install or a docker-based container.  
 The database should be accessible through the endpoint `http://localhost:8000`.

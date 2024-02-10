@@ -3,6 +3,7 @@ import * as bcrypt from 'bcryptjs';
 import { PhraseModel } from './models/Phrases';
 import { v4 as uuid } from 'uuid';
 import { UserModel } from './models/User';
+import { UserOutput } from '../graphql/outputs/user';
 
 @Service()
 export class DBService {
@@ -97,18 +98,21 @@ export class DBService {
     return newUser;
   }
 
-  async getUser(userKey: string) {
+  async getUser(userKey: string): Promise<UserOutput | null> {
     const results = await UserModel.query('userKey').eq(userKey).exec();
-    return results;
+    const users = results.toJSON() as UserOutput[];
+    return users.length > 0 ? users[0] : null;
   }
 
-  async getUserByEmail(email: string) {
+  async getUserByEmail(email: string): Promise<UserOutput | null> {
     const results = await UserModel.scan().where('email').eq(email).exec();
-    return results;
+    const users = results.toJSON() as UserOutput[];
+    return users.length > 0 ? users[0] : null;
   }
 
-  async getUsers() {
+  async getUsers(): Promise<UserOutput[]> {
     const results = await UserModel.scan().exec();
-    return results;
+    const users = results.toJSON() as UserOutput[];
+    return users;
   }
 }
