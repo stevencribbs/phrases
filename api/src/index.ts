@@ -11,7 +11,7 @@ import session, { SessionOptions } from 'express-session';
 // import connectRedis from 'connect-redis';
 import RedisStore from 'connect-redis';
 import cors from 'cors';
-import { GraphQLError } from 'graphql';
+import { GraphQLError, GraphQLFormattedError } from 'graphql';
 import { buildSchema } from './graphql/schema';
 import { redisClient } from './redis';
 import http from 'http';
@@ -39,7 +39,8 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema,
-    // formatError: (formattedError: GraphQLError) => formattedError, // custom validator can be applied here
+    formatError: (formattedError: GraphQLFormattedError, error) =>
+      formattedError, // custom validator can be applied here
     plugins: [
       // Install a landing page plugin based on NODE_ENV
       process.env.NODE_ENV === 'production'
@@ -61,8 +62,10 @@ const main = async () => {
     cors({
       allowedHeaders: ['Content-Type', 'Authorization'],
       credentials: true, // 'Access-Control-Allow-Credentials',
-      origin: ['https://studio.apollographql.com'], // 'Access-Control-Allow-Origin',,
-      // origin: 'http://localhost:4000/graphql',
+      origin: [
+        'https://studio.apollographql.com',
+        'http://localhost:4000/graphql',
+      ], // 'Access-Control-Allow-Origin',,
       // origin: '*',
     }),
   );
