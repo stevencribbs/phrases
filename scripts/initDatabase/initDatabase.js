@@ -17,17 +17,15 @@ const userKey = 'u123';
 const phrasesTableName = 'phrases';
 const usersTableName = 'users';
 
-// AWS.config.update({
-//   region: 'local',
-//   endpoint: 'http://localhost:8000',
-//   accessKeyId: 'fakekey',
-// });
-
 // const clientConfig = new DynamoDBClientConfigType({ accesKeyId: 'fakekey' });
 const client = new DynamoDBClient.DynamoDBClient({
   endpoint: 'http://localhost:8000',
+  // endpoint: 'http://localstack.localhost.rktsvc.com:4566',
   region: 'local',
-  accesKeyId: 'fakekey',
+  credentials: {
+    accessKeyId: 'fakekey',
+    secretAccessKey: 'fakekey',
+  },
 });
 const docClient = DynamoDBLib.DynamoDBDocumentClient.from(client);
 

@@ -64,18 +64,17 @@ const main = async () => {
       credentials: true, // 'Access-Control-Allow-Credentials',
       origin: [
         'https://studio.apollographql.com',
+        'https://sandbox.embed.apollographql.com',
         'http://localhost:4000/graphql',
       ], // 'Access-Control-Allow-Origin',,
       // origin: '*',
+      methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
     }),
   );
 
   app.use(
     '/graphql',
     express.json(),
-    expressMiddleware(apolloServer, {
-      context: async ({ req }: any) => ({ req }),
-    }),
     session({
       name: 'qid',
       secret: 'aslkdfjoiq12312',
@@ -88,6 +87,21 @@ const main = async () => {
         maxAge: 1000 * 60 * 60 * 24 * 7 * 365, // 7 years
         sameSite: 'none',
       },
+    }),
+  );
+
+  // NOTE: 'trust proxy' should not be set to true in production; this is needed for
+  // setting cookies
+  // NOTE: apollo client also needs "Include cookies" turned on; and, a shared header added
+  // Header: name: "x-forwarded-proto" value: "https"
+  app.set('trust proxy', true);
+
+  app.use(
+    // NOTE: Since the request session interface is extended to include the userKey,
+    // setting up the context, which accesses the session object, must be done after
+    // initializing the session configuration.
+    expressMiddleware(apolloServer, {
+      context: async ({ req }: any) => ({ req }),
     }),
   );
 

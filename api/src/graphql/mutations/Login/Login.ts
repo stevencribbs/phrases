@@ -20,6 +20,7 @@ export class LoginMutation {
     @Arg('password') password: string,
     @Ctx() ctx: PhrasesContext,
   ): Promise<UserOutput | null> {
+    console.log('user login');
     const user = await this.dbService.getUserByEmail(email);
 
     if (!user) return null;
@@ -28,8 +29,9 @@ export class LoginMutation {
 
     if (!valid) return null;
 
+    console.log('user validated');
     ctx.req.session.userKey = user.userKey;
-    console.log(ctx.req.session.userKey);
+    console.log(ctx.req.session);
     return user;
   }
 }

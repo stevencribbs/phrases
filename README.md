@@ -30,7 +30,6 @@ The AWS CLI can be used to list the local tables and data within the tables
 - to list data within a table:  
 `aws dynamodb scan --table-name phrases --endpoint-url http://localhost:8000 --region local`
 
-
 ## Data Structure
 The expected data structure for an individual phrase is:
 
@@ -45,3 +44,11 @@ The expected data structure for an individual phrase is:
   phraseType: string,  // enum: quote, fact, verse
 }
 ```
+
+## AWS Credentials Configuration
+If you receive permissions or credentials errors when running the init script, you may need to configure AWS so that you have credentials setup for AWS CLI commands - which generates a "credentials" file in the "[user]/.aws" with "aws_access_key_id" and "aws_secret_access_key" properties.
+
+From a command line:
+`aws configure`
+
+When prompted, for the access key id and the secret access key, a value such as "fakeKey" can be provided. 
