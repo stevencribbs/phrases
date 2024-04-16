@@ -16,7 +16,7 @@ export class MeResolver {
 
   @Query(() => UserOutput, { nullable: true })
   async me(@Ctx() ctx: PhrasesContext): Promise<UserOutput | undefined> {
-    console.log(ctx.req.session);
+    console.log('Me Resolver', ctx.req.session);
     if (!ctx.req.session!.userKey) {
       return undefined;
     }
