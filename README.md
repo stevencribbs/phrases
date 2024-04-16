@@ -30,6 +30,9 @@ The AWS CLI can be used to list the local tables and data within the tables
 - to list data within a table:  
 `aws dynamodb scan --table-name phrases --endpoint-url http://localhost:8000 --region local`
 
+NOTE: running these commands may error out indicating a problem in locating credentials.
+If so, see the section below for AWS Credentials Configuration.
+
 ## Data Structure
 The expected data structure for an individual phrase is:
 

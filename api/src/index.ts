@@ -8,7 +8,6 @@ import { expressMiddleware } from '@apollo/server/express4';
 import express from 'express';
 import dynamoose from 'dynamoose';
 import session, { SessionOptions } from 'express-session';
-// import connectRedis from 'connect-redis';
 import RedisStore from 'connect-redis';
 import cors from 'cors';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
@@ -76,6 +75,12 @@ const main = async () => {
     '/graphql',
     express.json(),
     session({
+      // Setting the store will then persist the session in redis
+      // // @ts-ignore
+      // store: new RedisStore({
+      //   // @ts-ignore
+      //   client: redisClient as any,
+      // }),
       name: 'qid',
       secret: 'aslkdfjoiq12312',
       resave: false,
@@ -83,9 +88,9 @@ const main = async () => {
       cookie: {
         httpOnly: true,
         // secure: process.env.NODE_ENV === 'production',
-        secure: true,
+        secure: false,
         maxAge: 1000 * 60 * 60 * 24 * 7 * 365, // 7 years
-        sameSite: 'none',
+        sameSite: 'lax', // for production, this should likely be 'none'
       },
     }),
   );
