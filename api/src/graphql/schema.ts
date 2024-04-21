@@ -15,6 +15,7 @@ import { PhrasesContext } from './types/PhrasesContext';
 import { ConfirmUserMutation } from './mutations/ConfirmUser/ConfirmUserMutation';
 import { ForgotPasswordMutation } from './mutations/ForgotPassword/ForgotPasswordMutation';
 import { ChangePasswordMutation } from './mutations/ChangePassword/ChangePasswordMutation';
+import { LogoutMutation } from './mutations/Logout/Logout';
 
 const checkScopes: typeGraphQL.AuthChecker<PhrasesContext> = (
   { root, args, context },
@@ -38,6 +39,7 @@ export const buildSchema = async () => {
       UserQueries,
       CreatePhraseMutation,
       LoginMutation,
+      LogoutMutation,
       DeletePhraseMutation,
       UpdatePhraseMutation,
       RegisterUserMutation,
