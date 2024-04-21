@@ -29,6 +29,9 @@ export class LoginMutation {
 
     if (!valid) return null;
 
+    if (!user.confirmed) return null;
+    
+
     console.log('user validated');
     ctx.req.session.userKey = user.userKey;
     console.log(ctx.req.session);
