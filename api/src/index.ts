@@ -111,7 +111,7 @@ const main = async () => {
     // setting up the context, which accesses the session object, must be done after
     // initializing the session configuration.
     expressMiddleware(apolloServer, {
-      context: async ({ req }: any) => ({ req }),
+      context: async ({ req, res }: any) => ({ req, res }),
     }),
   );
 
