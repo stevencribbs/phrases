@@ -4,6 +4,7 @@ import { PhraseModel } from './models/Phrases';
 import { v4 as uuid } from 'uuid';
 import { UserModel } from './models/User';
 import { UserOutput } from '../graphql/outputs/user';
+import { updateUserOptions } from 'src/graphql/types/updateOptions';
 
 @Service()
 export class DBService {
@@ -93,9 +94,25 @@ export class DBService {
       lastName,
       email,
       password: hashedPassword,
+      confirmed: false,
     });
 
     return newUser;
+  }
+
+  async updateUser(userKey: string, email: string, options: updateUserOptions) {
+    const { firstName, lastName, confirmed, password } = options;
+    const updatedUser = await UserModel.update(
+      { userKey, email },
+      {
+        ...(firstName && { firstName }),
+        ...(lastName && { lastName }),
+        ...(confirmed && { confirmed }),
+        ...(password && { password }),
+      },
+    );
+
+    return updatedUser;
   }
 
   async getUser(userKey: string): Promise<UserOutput | null> {

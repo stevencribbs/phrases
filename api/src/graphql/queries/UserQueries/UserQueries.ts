@@ -1,6 +1,6 @@
 import { DBService } from '../../../database/DBService';
 import { UserOutput } from '../../../graphql/outputs/user';
-import { Query, Resolver } from 'type-graphql';
+import { Authorized, Query, Resolver } from 'type-graphql';
 import Container, { Service } from 'typedi';
 
 @Service()
@@ -12,6 +12,7 @@ export class UserQueries {
     this.dataService = Container.get(DBService);
   }
 
+  @Authorized()
   @Query(() => [UserOutput])
   async getUsers() {
     const users = await this.dataService.getUsers();

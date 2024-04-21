@@ -11,6 +11,23 @@ import { UserQueries } from './queries/UserQueries';
 import { RegisterUserMutation } from './mutations/RegisterUser/RegisterUserMutation';
 import { LoginMutation } from './mutations/Login/Login';
 import { MeResolver } from './queries/MeResolver/Me';
+import { PhrasesContext } from './types/PhrasesContext';
+import { ConfirmUserMutation } from './mutations/ConfirmUser/ConfirmUserMutation';
+import { ForgotPasswordMutation } from './mutations/ForgotPassword/ForgotPasswordMutation';
+import { ChangePasswordMutation } from './mutations/ChangePassword/ChangePasswordMutation';
+
+const checkScopes: typeGraphQL.AuthChecker<PhrasesContext> = (
+  { root, args, context },
+  requiredRoles,
+) => {
+  const { req } = context;
+
+  // is the user logged in
+  if (req.session.userKey) {
+    return true;
+  }
+  return false;
+};
 
 export const buildSchema = async () => {
   return await typeGraphQL.buildSchema({
@@ -24,10 +41,13 @@ export const buildSchema = async () => {
       DeletePhraseMutation,
       UpdatePhraseMutation,
       RegisterUserMutation,
+      ConfirmUserMutation,
+      ForgotPasswordMutation,
+      ChangePasswordMutation,
     ],
     container: Container,
     // validate: { forbidUnknownValues: false },
     validate: true,
-    // authChecker: checkScopes,
+    authChecker: checkScopes,
   });
 };

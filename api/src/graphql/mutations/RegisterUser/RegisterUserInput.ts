@@ -1,9 +1,10 @@
 import { IsAlphanumeric, IsEmail } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 import { IsEmailAlreadyExist } from './isEmailAlreadyExist';
+import { PasswordInput } from '../../../graphql/inputs/passwordInput';
 
 @InputType()
-export class RegisterUserInput {
+export class RegisterUserInput extends PasswordInput {
   @Field()
   @IsAlphanumeric()
   firstName: string;
@@ -16,7 +17,4 @@ export class RegisterUserInput {
   @IsEmail()
   @IsEmailAlreadyExist() // NOTE: this is an example of a custom validator; though, not the best approach from a security standard
   email: string;
-
-  @Field()
-  password: string;
 }

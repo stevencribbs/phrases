@@ -7,6 +7,7 @@ export class User extends Item {
   lastName: string;
   email: string;
   password: string;
+  confirmed: boolean;
   dateCreated: string;
   dateUpdated: string;
 }
@@ -23,6 +24,7 @@ export const userSchema = new Schema({
   firstName: String,
   lastName: String,
   password: String,
+  confirmed: Boolean,
   dateCreated: {
     type: String,
     default: 'today',

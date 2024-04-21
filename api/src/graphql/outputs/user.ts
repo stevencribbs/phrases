@@ -21,4 +21,7 @@ export class UserOutput implements Partial<User> {
   email: string;
 
   password: string;
+
+  @Field()
+  confirmed: boolean;
 }

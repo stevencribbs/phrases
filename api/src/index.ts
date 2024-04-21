@@ -71,16 +71,21 @@ const main = async () => {
     }),
   );
 
+  let sessionRedisStore;
+  if (process.env.USE_REDIS === 'yes') {
+    console.log('yes Redis');
+    // @ts-ignore
+    sessionRedisStore = new RedisStore({ client: redisClient as any });
+  } else {
+    console.log('no Redis');
+  }
+
   app.use(
     '/graphql',
     express.json(),
     session({
       // Setting the store will then persist the session in redis
-      // // @ts-ignore
-      // store: new RedisStore({
-      //   // @ts-ignore
-      //   client: redisClient as any,
-      // }),
+      store: sessionRedisStore,
       name: 'qid',
       secret: 'aslkdfjoiq12312',
       resave: false,
