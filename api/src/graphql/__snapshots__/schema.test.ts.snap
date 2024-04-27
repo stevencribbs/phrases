@@ -2,13 +2,15 @@
 
 exports[`Service schema It should only change intentionally 1`] = `
 "type Query {
-  ping: String!
+  ping(phrase: String): String!
   phrasesForUser(userKey: String!): [Phrase!]!
   phrasesByType(phraseType: String!, userKey: String!): [Phrase!]!
+  getUsers: [User!]!
+  me: User
 }
 
 type Phrase {
-  userKey: String!
+  userKey: ID!
   phraseKey: String!
   author: String
   phraseType: String
@@ -17,10 +19,25 @@ type Phrase {
   source: String
 }
 
+type User {
+  userKey: String!
+  firstName: String!
+  lastName: String!
+  name: String!
+  email: String!
+  confirmed: Boolean!
+}
+
 type Mutation {
   createPhrase(phrase: CreatePhraseInput!): PhraseCreatedOutput!
   updatePhrase(phrase: UpdatePhraseInput!): PhraseUpdatedOutput!
   deletePhrase(deletePhraseInput: DeletePhraseInput!): DeletePhraseResult!
+  registerUser(user: RegisterUserInput!): User!
+  login(password: String!, email: String!): User
+  confirmUser(token: String!): Boolean!
+  forgotPassword(email: String!): String!
+  changePassword(data: ChangePasswordInput!): User
+  logout: Boolean!
 }
 
 type PhraseCreatedOutput {
@@ -64,5 +81,16 @@ input DeletePhraseInput {
   userKey: String!
   phraseKey: String!
 }
-"
+
+input RegisterUserInput {
+  password: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+}
+
+input ChangePasswordInput {
+  password: String!
+  token: String!
+}"
 `;
